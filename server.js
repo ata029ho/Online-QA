@@ -16,6 +16,11 @@ const io = new Server(server, {
 // 靜態檔案服務
 app.use(express.static(path.join(__dirname, 'public')));
 
+// 根路徑重導向到使用者介面
+app.get('/', (req, res) => {
+  res.redirect('/client.html');
+});
+
 // ============ 遊戲狀態 (記憶體儲存) ============
 const gameState = {
   isLocked: false,        // 是否鎖定房間（禁止新加入）
