@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>控制台 - 線上搶答系統</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .admin-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem 2rem;
+      background: rgba(15, 23, 42, 0.9);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .admin-header h1 {
+      font-size: 1.5rem;
+    }
+    
+    .admin-main {
+      padding: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    .control-panel {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .actions-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+    
+    .stat-value {
+      font-size: 3rem;
+      font-weight: 800;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .lock-status {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-weight: 600;
+    }
+    
+    .lock-status.unlocked {
+      background: rgba(16, 185, 129, 0.2);
+      color: var(--success);
+    }
+    
+    .lock-status.locked {
+      background: rgba(239, 68, 68, 0.2);
+      color: var(--danger);
+    }
+    
+    .current-winner {
+      padding: 1.5rem;
+      background: var(--gradient-success);
+      border-radius: 12px;
+      margin-top: 1rem;
+    }
+    
+    .winner-info {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    
+    .winner-reaction {
+      font-size: 1rem;
+      opacity: 0.9;
+      margin-top: 0.5rem;
+    }
+    
+    .no-winner {
+      color: var(--gray);
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <header class="admin-header">
+    <h1>🎮 搶答系統控制台</h1>
+    <div class="flex items-center gap-2">
+      <span class="status-dot online"></span>
+      <span>伺服器連線中</span>
+    </div>
+  </header>
+
+  <main class="admin-main">
+    <div class="control-panel">
+      <!-- 搶答控制 -->
+      <div class="card">
+        <div class="card-header">
+          <h2>🎯 搶答控制</h2>
+        </div>
+        <div class="actions-grid">
+          <button id="btnStart" class="btn btn-success btn-lg">
+            ▶️ 開始搶答
+          </button>
+          <button id="btnReset" class="btn btn-outline btn-lg">
+            🔄 重置
+          </button>
+        </div>
+        
+        <div class="mt-3">
+          <h3 class="mb-2">目前獲勝者</h3>
+          <div id="winnerDisplay" class="no-winner">
+            尚無搶答結果
+          </div>
+        </div>
+      </div>
+
+      <!-- 房間狀態 -->
+      <div class="card">
+        <div class="card-header">
+          <h2>🚪 房間狀態</h2>
+          <div id="lockStatus" class="lock-status unlocked">
+            🔓 開放加入
+          </div>
+        </div>
+        <button id="btnLock" class="btn btn-primary btn-block btn-lg mb-3">
+          🔒 鎖定房間
+        </button>
+        
+        <div class="text-center">
+          <div class="stat-value" id="participantCount">0</div>
+          <div style="color: var(--gray)">位參賽者在線</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 參賽者列表 -->
+    <div class="card">
+      <div class="card-header">
+        <h2>👥 參賽者列表</h2>
+        <span class="badge badge-primary" id="onlineCount">0 人在線</span>
+      </div>
+      <div class="participant-list" id="participantList">
+        <div class="no-winner text-center">尚無參賽者加入</div>
+      </div>
+    </div>
+  </main>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
